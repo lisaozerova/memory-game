@@ -1,17 +1,21 @@
 <template>
   <div class="wrapper">
     <div class="board">
-      <BoardCell v-for="i in 36" v-bind:key="'cell-' + i" />
+      <BoardCell
+        v-for="field in fields"
+        v-bind:field="field"
+        v-bind:key="'cell-' + field.id"
+      />
     </div>
 
     <p class="difficulty">Difficulty: <strong>{{ difficulty }}</strong></p>
 
-    <button class="btn">Play</button>
+    <button class="btn" v-on:click="start">Start</button>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 import BoardCell from './BoardCell';
 
@@ -21,12 +25,54 @@ export default {
     BoardCell,
   },
   setup() {
+    const CELLS_AMOUNT = 36;
     const difficulty = ref(3);
+    const fields = ref([]);
+
+    const init = () => {
+      fields.value = [];
+
+      for (let i = 0; i < CELLS_AMOUNT; i++) {
+        fields.value.push({
+          id: i,
+          clicked: false,
+          value: 0,
+        })
+      }
+    }
+
+    onBeforeMount(init);
 
     return {
+      CELLS_AMOUNT,
       difficulty,
+      fields,
+      init,
     }
   },
+
+  methods: {
+    start() {
+      this.init();
+      this.prepareGame();
+    },
+
+    prepareGame() {
+      for (let i = 0; i < this.difficulty; i++) {
+        const index = this.getRandomNumber(0, this.CELLS_AMOUNT - 1);
+
+        if (this.fields[index].value !== 1) {
+          this.fields[index].value = 1;
+        } else {
+          i--;
+        }
+      }
+    },
+
+    getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    },
+  }
 }
 </script>
 
