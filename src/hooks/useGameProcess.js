@@ -49,8 +49,8 @@ export default (fields, gameStatus, difficulty, start) => {
     }, GAME_SPEED);
   };
 
-  const isWin = computed(() => gameStatus.value === GameStatus.WIN);
   const isFail = computed(() => gameStatus.value === GameStatus.FAILED);
+  const isWin = computed(() => gameStatus.value === GameStatus.WIN);
 
   return {
     getCompliment,

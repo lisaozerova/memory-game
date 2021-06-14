@@ -72,39 +72,39 @@ export default {
 }
 
 .btn {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  outline: none;
-  vertical-align: middle;
-  text-decoration: none;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: 600;
-  color: #382b22;
-  text-transform: uppercase;
-  padding: 10px 30px;
   background-color: #fff0f0;
   border: 2px solid #b18597;
   border-radius: 10px;
+  color: #382b22;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  outline: none;
+  padding: 10px 30px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
   transform-style: preserve-3d;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background-color 150ms cubic-bezier(0, 0, 0.58, 1);
+  vertical-align: middle;
 }
 
 .btn::before {
-  position: absolute;
-  content: '';
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background-color: #f9c4d2;
   border-radius: inherit;
+  bottom: 0;
   box-shadow: 0 0 0 2px #b18597;
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
   transform: translate3d(0, 0.75em, -1em);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  width: 100%;
 }
 
 .btn:hover {

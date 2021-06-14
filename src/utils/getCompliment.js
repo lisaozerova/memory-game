@@ -1,21 +1,21 @@
 import { getRandomNumber } from '@/utils/getRandomNumber';
 
 const complimentList = [
-  'awesome',
-  'gorgeous',
   'amazing',
-  'striking',
+  'awesome',
   'brilliant',
-  'stunning',
-  'impressive',
-  'overwhelming',
-  'the best',
   'cool',
+  'gorgeous',
   'great',
+  'impressive',
+  'lovely',
+  'overwhelming',
   'perfect',
   'really good',
-  'lovely',
   'splendid',
+  'striking',
+  'stunning',
+  'the best',
   'wonderful',
 ];
 
