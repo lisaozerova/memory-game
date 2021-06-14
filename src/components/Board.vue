@@ -3,20 +3,29 @@
     <div class="board">
       <BoardCell
         v-for="field in fields"
+        v-bind:game-status="gameStatus"
         v-bind:field="field"
         v-bind:key="'cell-' + field.id"
+        @selectCell="selectCell($event)"
       />
     </div>
 
     <p class="difficulty">Difficulty: <strong>{{ difficulty }}</strong></p>
+    <p class="win" v-if="isWin">Win, you're {{ getCompliment() }}! Continue!</p>
+    <p class="fail" v-if="isFail">You lose, try again!</p>
 
-    <button class="btn" v-on:click="start">Start</button>
+    <button class="btn" v-bind:disabled="!canStartGame" v-on:click="start">Play</button>
   </div>
 </template>
 
 <script>
-import { onBeforeMount, ref } from 'vue';
+import { ref } from 'vue';
 
+import { CELLS_AMOUNT } from '@/constants';
+import GameStatus from '@/enums/GameStatus';
+import useGameInit from '@/hooks/useGameInit';
+import useGameProcess from '@/hooks/useGameProcess';
+import useGameStart from '@/hooks/useGameStart';
 import BoardCell from './BoardCell';
 
 export default {
@@ -25,54 +34,31 @@ export default {
     BoardCell,
   },
   setup() {
-    const CELLS_AMOUNT = 36;
-    const difficulty = ref(3);
-    const fields = ref([]);
+    const gameStatus = ref(GameStatus.NONE);
 
-    const init = () => {
-      fields.value = [];
-
-      for (let i = 0; i < CELLS_AMOUNT; i++) {
-        fields.value.push({
-          id: i,
-          clicked: false,
-          value: 0,
-        })
-      }
-    }
-
-    onBeforeMount(init);
+    const { difficulty, fields, init } = useGameInit(CELLS_AMOUNT);
+    const { canStartGame, start } = useGameStart(init, fields, difficulty, CELLS_AMOUNT, gameStatus);
+    const {
+      getCompliment,
+      isFail,
+      isWin,
+      selectCell,
+    } = useGameProcess(fields, gameStatus, difficulty, start);
 
     return {
-      CELLS_AMOUNT,
       difficulty,
       fields,
+      gameStatus,
+      GameStatus,
       init,
+      isFail,
+      isWin,
+      canStartGame,
+      getCompliment,
+      selectCell,
+      start,
     }
   },
-
-  methods: {
-    start() {
-      this.init();
-      this.prepareGame();
-    },
-
-    prepareGame() {
-      for (let i = 0; i < this.difficulty; i++) {
-        const index = this.getRandomNumber(0, this.CELLS_AMOUNT - 1);
-
-        if (this.fields[index].value !== 1) {
-          this.fields[index].value = 1;
-        } else {
-          i--;
-        }
-      }
-    },
-
-    getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    },
-  }
 }
 </script>
 

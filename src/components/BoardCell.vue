@@ -1,14 +1,49 @@
 <template>
-  <span v-bind:class="'cell ' + (field.value === 1 ? 'cell--active' : '')" />
+  <span v-bind:class="getBoardCellClassNames" v-on:click="selectCell(field.id)" />
 </template>
 
 <script>
+import { computed } from 'vue';
+
+import FieldStatus from '@/enums/FieldStatus';
+import GameStatus from '@/enums/GameStatus';
+
 export default {
   name: 'BoardCell',
   props: {
     field: {
       type: Object,
       required: true,
+    },
+    gameStatus: {
+      type: Number,
+      required: true,
+      default: GameStatus.NONE,
+    }
+  },
+
+  setup(props) {
+    const getBoardCellClassNames = computed(() => {
+      const isGameStatusPreview = props.gameStatus === GameStatus.PREVIEW;
+      const isFieldFilled = props.field.value === FieldStatus.FILLED;
+      const isFieldEmpty = props.field.value === FieldStatus.EMPTY;
+      const isCellChecked = props.field.clicked;
+      const shouldShowActiveCell = (isGameStatusPreview && isFieldFilled) || (isCellChecked && isFieldFilled);
+      const shouldShowErrorCell = isCellChecked && isFieldEmpty;
+
+      return `cell ${shouldShowActiveCell && 'cell--active'} ${shouldShowErrorCell && 'cell--error'}`;
+    });
+
+    return {
+      getBoardCellClassNames,
+    }
+  },
+
+  methods: {
+    selectCell(id) {
+      if (this.gameStatus === GameStatus.STARTED) {
+        this.$emit('selectCell', id);
+      }
     },
   },
 }
@@ -35,6 +70,11 @@ export default {
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: 20px 20px;
+  transform: rotateX(180deg);
+}
+
+.cell--error {
+  background-color: #ff6969;
   transform: rotateX(180deg);
 }
 </style>
