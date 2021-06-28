@@ -5,7 +5,7 @@
         v-for="field in fields"
         v-bind:game-status="gameStatus"
         v-bind:field="field"
-        v-bind:key="'cell-' + field.id"
+        v-bind:key="`cell-${field.id}`"
         @selectCell="selectCell($event)"
       />
     </div>
@@ -21,11 +21,11 @@
 <script>
 import { ref } from 'vue';
 
+import useGameInit from '@/composables/useGameInit';
+import useGameProcess from '@/composables/useGameProcess';
+import useGameStart from '@/composables/useGameStart';
 import { CELLS_AMOUNT } from '@/constants';
 import GameStatus from '@/enums/GameStatus';
-import useGameInit from '@/hooks/useGameInit';
-import useGameProcess from '@/hooks/useGameProcess';
-import useGameStart from '@/hooks/useGameStart';
 import BoardCell from './BoardCell';
 
 export default {
