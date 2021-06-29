@@ -6,7 +6,7 @@
         v-bind:game-status="gameStatus"
         v-bind:field="field"
         v-bind:key="`cell-${field.id}`"
-        @selectCell="selectCell($event)"
+        v-on:selectCell="selectCell($event)"
       />
     </div>
 
